@@ -13,7 +13,7 @@ jobs:
       GH_REF: ${{ forgejo.ref }}
       GH_REF_NAME: ${{ forgejo.ref_name }}
       GH_EVENT_NAME: ${{ forgejo.event_name }}
-      INFLUXDBUID: ${{ secrets.INFLUXDBUID }}
+      TESTDSUID: ${{ secrets.TESTDSUID }}
       JSONDSUID: ${{ secrets.JSONDSUID }}
       HOST_GRA: ${{ vars.HOST_GRA }}
       TOKEN_GRA: ${{ secrets.TOKEN_GRA }}
