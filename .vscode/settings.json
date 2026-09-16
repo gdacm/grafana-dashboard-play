@@ -1,0 +1,21 @@
+{
+    "workbench.colorCustomizations": {
+        "editor.lineHighlightBackground": "#1073cf2d",
+        "editor.lineHighlightBorder": "#9fced11f",
+        "titleBar.activeBackground": "#fcc2ed",
+        "titleBar.activeForeground": "#000000",
+        "titleBar.inactiveBackground": "#fcc2ed",
+        "titleBar.inactiveForeground": "#000000",
+        "titleBar.border": "#fcc2ed",
+        "activityBar.background": "#fcc2ed",
+        "activityBar.foreground": "#000000",
+        "statusBar.background": "#fcc2ed",
+        "statusBar.foreground": "#000000",
+        "statusBar.debuggingBackground": "#fcc2ed",
+        "statusBar.debuggingForeground": "#000000",
+        "tab.activeBorder": "#fcc2ed",
+        "iLoveWorkSpaceColors": true,
+        "iLoveWorkSpaceRandom": false
+    },
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+}

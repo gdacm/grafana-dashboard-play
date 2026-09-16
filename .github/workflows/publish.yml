@@ -1,0 +1,56 @@
+name: Publish & Deploy
+
+on:
+  push:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      GH_REF: ${{ github.ref }}
+      GH_REF_NAME: ${{ github.ref_name }}
+      GH_EVENT_NAME: ${{ github.event_name }}
+      INFLUXDBUID: ${{ secrets.INFLUXDBUID }}
+      JSONDSUID: ${{ secrets.JSONDSUID }}
+      HOST_GRA: ${{ vars.HOST_GRA }}
+      TOKEN_GRA: ${{ secrets.TOKEN_GRA }}
+    steps:
+      - name: Get source code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run publish & deploy
+        run: |
+          echo "## Run publish & deploy (${GH_REF}) (${GH_EVENT_NAME})"
+          mkdir -p local
+          cat << EOF > local/gra.json
+          {
+            "jsonDsUid": "${JSONDSUID}",
+            "testDsUid": "${TESTDSUID}"
+          }
+          EOF
+          if [[ "${GH_REF}" == refs/tags/* ]]; then
+            export GDM_TEST_NAME="t-${GH_REF_NAME}"
+          else
+            if [ "${GH_REF_NAME}" != "main" ]; then
+              export GDM_TEST_NAME="b-${GH_REF_NAME}"
+            fi
+          fi
+          echo "GDM_TEST_NAME=${GDM_TEST_NAME}"
+          GDM_API_URL="${HOST_GRA}" GDM_API_TOKEN="${TOKEN_GRA}" GDM_INCLUDE="gra" yarn start
