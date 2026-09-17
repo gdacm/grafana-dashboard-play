@@ -10,7 +10,7 @@
     "upgradeGdacm": "yarn add @gdacm/core@latest --no-time-gate"
   },
   "dependencies": {
-    "@gdacm/core": "^0.1.22"
+    "@gdacm/core": "^0.1.23"
   },
   "devDependencies": {
     "tsx": "^4.23.12",
