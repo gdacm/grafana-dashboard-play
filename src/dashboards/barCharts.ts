@@ -1,4 +1,4 @@
-import { Color, DashboardInfo, FieldConfig, FieldConfigOverride, Histogram, OverrideMatcher, PieChart, Target } from "@gdacm/core"
+import { Color, DashboardInfo, FieldConfigOverride, Histogram, PieChart } from "@gdacm/core"
 import { BarChart, Dashboard, Datasource, GrafanaItem, Mapping, Testdata, VizTextDisplayOptions } from "@gdacm/core"
 import { configureLink, getTextPanelMarkdown, getYoutubePanel } from "../tools"
 
