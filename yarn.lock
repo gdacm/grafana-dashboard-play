@@ -187,41 +187,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gdacm/base-types@npm:^0.1.23":
-  version: 0.1.23
-  resolution: "@gdacm/base-types@npm:0.1.23"
-  checksum: 10c0/0b02807bcc3d34ff9bf326dab9eef987e36b4ebc6ad2fccaae258e88286ee3b047eeafeddd2ed10058dfc8e135a30e75c4870703272714d7201916b6b5428e64
+"@gdacm/base-types@npm:^0.1.24":
+  version: 0.1.24
+  resolution: "@gdacm/base-types@npm:0.1.24"
+  checksum: 10c0/8079e6526927c5bc38c3ffc903b1e986d4c42ba4b5e4a03b83ca889b17ead4b5a73183ef77b637fe304929e1ae2f3653068b8134729ac924d5971f9772c648b0
   languageName: node
   linkType: hard
 
-"@gdacm/core@npm:^0.1.23":
-  version: 0.1.23
-  resolution: "@gdacm/core@npm:0.1.23"
+"@gdacm/core@npm:^0.1.24":
+  version: 0.1.24
+  resolution: "@gdacm/core@npm:0.1.24"
   dependencies:
-    "@gdacm/base-types": "npm:^0.1.23"
-    "@gdacm/dashboard-manager": "npm:^0.1.23"
-    "@gdacm/grafana-items": "npm:^0.1.23"
-  checksum: 10c0/5cc863d557d477196e1ad90f69e0ed2f6aa3aa4918bc9a279356c89c2fb99690a4fa67bc4f65c39a0dc302eba75119b04507be67131e9d22587a76d8db8034a0
+    "@gdacm/base-types": "npm:^0.1.24"
+    "@gdacm/dashboard-manager": "npm:^0.1.24"
+    "@gdacm/grafana-items": "npm:^0.1.24"
+  checksum: 10c0/44efa312d4f6726d78945bd831dd5908769663cf6e7699145f543a6ef6ececb8da6cf6bb34b36f945b0666aec361b74fa34e995cf52203f334e05e79df571003
   languageName: node
   linkType: hard
 
-"@gdacm/dashboard-manager@npm:^0.1.23":
-  version: 0.1.23
-  resolution: "@gdacm/dashboard-manager@npm:0.1.23"
+"@gdacm/dashboard-manager@npm:^0.1.24":
+  version: 0.1.24
+  resolution: "@gdacm/dashboard-manager@npm:0.1.24"
   dependencies:
-    "@gdacm/base-types": "npm:^0.1.23"
-    "@gdacm/grafana-items": "npm:^0.1.23"
+    "@gdacm/base-types": "npm:^0.1.24"
+    "@gdacm/grafana-items": "npm:^0.1.24"
     js-yaml: "npm:^5.2.3"
-  checksum: 10c0/bfacc018898f90606f21c1f7a39504096e7da3083b0d9d2ff4054b50dd14ad24a47b5e4c11dd4f7768398d2eef6096e3d125800761aac541cff6711d474847fa
+  checksum: 10c0/0d0d0fa8cefd3959241439ab6cdfdbc84235ccbd912086d06e29835a102abb41a826175f2f9ae2695d11e03a7e37c67892b4f253a48b078a53d341be4dfabe5d
   languageName: node
   linkType: hard
 
-"@gdacm/grafana-items@npm:^0.1.23":
-  version: 0.1.23
-  resolution: "@gdacm/grafana-items@npm:0.1.23"
+"@gdacm/grafana-items@npm:^0.1.24":
+  version: 0.1.24
+  resolution: "@gdacm/grafana-items@npm:0.1.24"
   dependencies:
-    "@gdacm/base-types": "npm:^0.1.23"
-  checksum: 10c0/e6feb894e36f05d05f87c8315484381fe9dd82933fb47af2b61ac56baa5c089f18fd9929aab789852648cadde4b5baf84a4f721866865eef65b25041771bcdb1
+    "@gdacm/base-types": "npm:^0.1.24"
+  checksum: 10c0/4f6da378df684fb838c50d6c3d8641af77e8c04024b3635bd2129632cef1959794f40e2d34b26cfdf469c681de417e09c77fc48e347dbc7b61718282906519b8
   languageName: node
   linkType: hard
 
@@ -540,7 +540,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "grafana-dashboard-play@workspace:."
   dependencies:
-    "@gdacm/core": "npm:^0.1.23"
+    "@gdacm/core": "npm:^0.1.24"
     tsx: "npm:^4.23.12"
     typescript: "npm:^7.0.2"
   languageName: unknown
