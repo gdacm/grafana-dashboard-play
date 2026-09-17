@@ -1,14 +1,17 @@
-import { Color, DashboardInfo, FieldConfig, FieldConfigOverride, OverrideMatcher, PieChart, Target } from "@gdacm/core"
+import { Color, DashboardInfo, FieldConfig, FieldConfigOverride, Histogram, OverrideMatcher, PieChart, Target } from "@gdacm/core"
 import { BarChart, Dashboard, Datasource, GrafanaItem, Mapping, Testdata, VizTextDisplayOptions } from "@gdacm/core"
 import { configureLink, getTextPanelMarkdown, getYoutubePanel } from "../tools"
 
-import type { DashboardMetaOptions } from "@gdacm/core";
+import type { DashboardMetaOptions, Panel } from "@gdacm/core";
 
 const getDashboard = async (uid: string, metaOptions: DashboardMetaOptions): Promise<Dashboard> => {
     const { testDsUid } = metaOptions.info || {};
 
     const datasource: Datasource = new Testdata(metaOptions).setUid(testDsUid)
     metaOptions = { ...metaOptions, datasource }
+
+    let panelMarketShare: BarChart | null = null
+    const datasourceDashboard: Datasource = new Datasource(metaOptions).setType("datasource").setUid("-- Dashboard --")
 
     return new Dashboard(metaOptions)
         .setUid(uid)
@@ -307,6 +310,9 @@ const getDashboard = async (uid: string, metaOptions: DashboardMetaOptions): Pro
                                 )
                         )
                 )
+                .with(
+                    panel => panelMarketShare = panel
+                )
         )
         .addPanel(
             new PieChart(metaOptions)
@@ -409,8 +415,120 @@ const getDashboard = async (uid: string, metaOptions: DashboardMetaOptions): Pro
                 )
         )
         .addPanel(
-            new PieChart(metaOptions)
+            new Histogram(metaOptions)
                 .setDatasource(datasource)
+                .withCustom(
+                    custom => custom
+                        .setFillOpacity(80)
+                        .setGradientMode("hue")
+                        .withHideFrom(
+                            hideFrom => hideFrom
+                                .setGraph(false)
+                                .setLegend(false)
+                                .setTooltip(false)
+                                .setViz(false)
+                        )
+                        .setLineWidth(1)
+                        .withStacking(
+                            stacking => stacking
+                                .setGroup("A")
+                                .setMode("none")
+                        )
+                )
+                .withFieldConfig(
+                    fieldConfig => fieldConfig
+                        .withDefaults(
+                            defaults => defaults
+                                .withThresholds(
+                                    thresholds => thresholds
+                                        .setMode("absolute")
+                                        .addStepWithValueAndColor(0, "green") // null, "green"
+                                        .addStepWithValueAndColor(80, "red")
+                                )
+                        )
+                        .addNewOverride(
+                            override => override
+                                .withMatcher(
+                                    matcher => matcher
+                                        .setId("byName")
+                                        .setOptions("A-series")
+                                )
+                                .addNewProperty(
+                                    properties => properties
+                                        .setId("color")
+                                        .setValue({ mode: "fixed", fixedColor: "blue" })
+                                )
+                        )
+                )
+                .setPos(0, 27, 13, 12)
+                .withOptions(
+                    options => options
+                        .setBucketOffset(0)
+                        .setBucketSize(1)
+                        .withLegend(
+                            legend => legend
+                                .initCalcs()
+                                .setDisplayMode("list")
+                                .setPlacement("bottom")
+                                .setShowLegend(false)
+                        )
+                        .withTooltip(
+                            tooltip => tooltip
+                                .setHideZeros(false)
+                                .setMode("single")
+                                .setSort("none")
+                        )
+                )
+                .addNewTarget(
+                    target => target
+                        .setAlias("")
+                        ._setObject("csvWave",
+                            new GrafanaItem(metaOptions)
+                                ._setValue("timeStep", 60)
+                                ._setValue("valueCSV", "0,0,2,2,1,1")
+                        )
+                        .setDatasource(datasource)
+                        ._setValue("lines", 10)
+                        ._setValue("max", 100)
+                        ._setValue("min", 1)
+                        ._setValue("noise", 10)
+                        ._initArray("points")
+                        ._setObject("pulseWave",
+                            new GrafanaItem(metaOptions)
+                                ._setValue("offCount", 3)
+                                ._setValue("offValue", 1)
+                                ._setValue("onCount", 3)
+                                ._setValue("onValue", 2)
+                                ._setValue("timeStep", 60)
+                        )
+                        .setRefId("A")
+                        ._setValue("scenarioId", "random_walk")
+                        ._setValue("spread", 10)
+                        ._setValue("startValue", 50)
+                        ._setObject("stream",
+                            new GrafanaItem(metaOptions)
+                                ._setValue("bands", 1)
+                                ._setValue("noise", 2.2)
+                                ._setValue("speed", 250)
+                                ._setValue("spread", 3.5)
+                                ._setValue("type", "signal")
+                        )
+                        ._setValue("stringInput", "1,20,90,30,5,0")
+                )
+                .setTitle("Histogram visualization")
+        )
+        .addPanel(
+            new PieChart(metaOptions)
+                .setDatasource(datasourceDashboard)
+                .withCustom(
+                    custom => custom
+                        .withHideFrom(
+                            hideFrom => hideFrom
+                                .setLegend(false)
+                                .setTooltip(false)
+                                .setViz(false)
+                        )
+                )
                 .withFieldConfig(
                     fieldConfig => fieldConfig
                         .withDefaults(
@@ -418,32 +536,77 @@ const getDashboard = async (uid: string, metaOptions: DashboardMetaOptions): Pro
                                 .setDecimals(1)
                                 .setUnit("none")
                         )
-                    .addNewOverride(
-                        override => override
-                            .withMatcher(
-                                matcher => matcher
-                                    .setId("byName")
-                                    .setOptions("Chrome")
-                            )
-                            .addNewProperty(
-                                property => property
-                                    .setId("color")
-                                    .setValue({
-                                        fixedColor: "purple",
-                                        mode: "fixed"
-                                    })
-                            )
-                    )
+                        .addNewOverride(
+                            override => override
+                                .withMatcher(
+                                    matcher => matcher
+                                        .setId("byName")
+                                        .setOptions("Chrome")
+                                )
+                                .addNewProperty(
+                                    property => property
+                                        .setId("color")
+                                        .setValue({ mode: "fixed", fixedColor: "purple" })
+                                )
+                        )
                 )
-                .setPos(27,13,11,12)
+                .setPos(13, 27, 11, 12)
                 .withOptions(
                     options => options
                         .addDisplayLabel("name")
                         .withLegend(
                             legend => legend
-
+                                .setDisplayMode("list")
+                                .setPlacement("right")
+                                .setShowLegend(true)
+                                .initValues()
+                        )
+                        .setPieType("donut")
+                        ._setObject("reduceOptions",
+                            new GrafanaItem(metaOptions)
+                                ._addArrayItem("calcs", "mean")
+                                ._setValue("fields", "")
+                                ._setValue("values", true)
+                        )
+                        ._setValue("showLegend", true)
+                        ._setValue("strokeWidth", 1)
+                        ._setValue("text", {})
+                        .withTooltip(
+                            tooltip => tooltip
+                                .setHideZeros(false)
+                                .setMode("single")
+                                .setSort("none")
                         )
                 )
+                .addNewTarget(
+                    target => target
+                        .setDatasource(datasourceDashboard)
+                        ._setValue("panelId", panelMarketShare?.id ?? 0)
+                        ._setValue("refId", "A")
+                )
+                .setTitle("Browser market share")
+                .addNewTransformation(
+                    transformation => transformation
+                        ._setValue("id", "filterByValue")
+                        ._setObject("options",
+                            new GrafanaItem(metaOptions)
+                                ._addArrayItem("filters",
+                                    new GrafanaItem(metaOptions)
+                                        ._setObject("config",
+                                            new GrafanaItem(metaOptions)
+                                                ._setValue("id", "greater")
+                                                ._setObject("options",
+                                                    new GrafanaItem(metaOptions)
+                                                        ._setValue("value", 0.2)
+                                                )
+                                        )
+                                        ._setValue("fieldName", "Market share")
+                                )
+                                ._setValue("match", "any")
+                                ._setValue("type", "include")
+                        )
+                )
+
         )
         .setPreload(false)
         .setTimeRange("now-6h", "now")
